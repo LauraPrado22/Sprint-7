@@ -1,23 +1,18 @@
 
 
-import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+import streamlit as st
 
-st.title("Mi Análisis de Datos con Streamlit y Plotly")
+# Leer los datos del archivo CSV (ruta completa corregida)
+car_data = pd.read_csv(r"C:\Users\laurap10\OneDrive - kochind.com\Documents\Laura's Folder\Project\Python\vehicles_us.csv")
 
-# Crear un dataframe de ejemplo
-df = pd.DataFrame({
-    "Categoría": ["A", "B", "C", "D"],
-    "Valores": [10, 20, 30, 40]
-})
+# Crear un histograma utilizando plotly.graph_objects
+fig = go.Figure(data=[go.Histogram(x=car_data['odometer'])])
 
-# Mostrar la tabla
-st.write("Tabla de datos:")
-st.dataframe(df)
+# Añadir título al gráfico
+fig.update_layout(title_text='Distribución del Odómetro')
 
-# Crear un gráfico de barras
-fig = px.bar(df, x="Categoría", y="Valores", title="Gráfico de ejemplo")
+# Mostrar el gráfico en Streamlit
 st.plotly_chart(fig)
-
-print(df)
