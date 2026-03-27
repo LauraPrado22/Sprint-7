@@ -6,22 +6,31 @@ import plotly.graph_objects as go
 # Leer los datos del archivo CSV
 car_data = pd.read_csv('vehicles_us.csv')
 
-# Crear un histograma utilizando plotly.graph_objects
-fig = go.Figure(data=[go.Histogram(x=car_data['odometer'])])
-
-# Añadir título al gráfico
-fig.update_layout(title_text='Distribución del Odómetro')
-
-# ✅ Mostrar el gráfico en Streamlit (NO usar fig.show())
-st.plotly_chart(fig)
+# Encabezado principal
+st.header('Análisis de Vehículos en Venta en EE.UU.')
+st.write('Explora los datos de anuncios de venta de coches usando los gráficos interactivos a continuación.')
 
 
-# Crear un scatter plot utilizando plotly.graph_objects
-# Se crea una figura vacía y luego se añade un rastro de scatter
-fig = go.Figure(data=[go.Scatter(x=car_data['odometer'], y=car_data['price'], mode='markers')])
+# histograma
+build_histogram = st.checkbox('Construir un histograma del odómetro')
 
-# Opcional: Puedes añadir un título al gráfico si lo deseas
-fig.update_layout(title_text='Relación entre Odómetro y Precio')
+if build_histogram:
+    st.write('Histograma de la distribución del odómetro')
+    fig_hist = go.Figure(data=[go.Histogram(x=car_data['odometer'])])
+    fig_hist.update_layout(title_text='Distribución del Odómetro')
+    st.plotly_chart(fig_hist, use_container_width=True)
 
-# Mostrar el gráfico Plotly
-fig.show()
+# Casilla para el gráfico de dispersión
+build_scatter = st.checkbox('Construir un gráfico de dispersión (precio vs odómetro)')
+
+if build_scatter:
+    st.write('Gráfico de dispersión: Precio vs Odómetro')
+    fig_scatter = px.scatter(
+        car_data,
+        x='odometer',
+        y='price',
+        title='Precio vs Odómetro',
+        labels={'odometer': 'Odómetro (millas)', 'price': 'Precio (USD)'},
+        opacity=0.5
+    )
+    st.plotly_chart(fig_scatter, use_container_width=True)
